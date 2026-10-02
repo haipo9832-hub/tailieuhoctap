@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tài Liệu Tham Khảo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #0a0a1a;
+      font-family: 'Rajdhani', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated starfield background */
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .stars span {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--d, 3s) infinite alternate;
+      opacity: 0;
+    }
+    @keyframes twinkle {
+      from { opacity: 0; transform: scale(0.5); }
+      to   { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* Glowing orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      animation: floatOrb 8s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 400px; height: 400px; background: rgba(99,0,255,0.25); top: -100px; left: -100px; }
+    .orb-2 { width: 350px; height: 350px; background: rgba(0,212,255,0.20); bottom: -80px; right: -80px; animation-delay: -4s; }
+    .orb-3 { width: 250px; height: 250px; background: rgba(255,0,128,0.15); top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -2s; }
+    @keyframes floatOrb {
+      from { transform: translate(0,0); }
+      to   { transform: translate(30px, 30px); }
+    }
+
+    /* Main content */
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 6px 20px;
+      background: linear-gradient(135deg, #6300ff44, #00d4ff44);
+      border: 1px solid #6300ff88;
+      border-radius: 50px;
+      color: #00d4ff;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      animation: pulse-border 2s infinite;
+    }
+    @keyframes pulse-border {
+      0%,100% { box-shadow: 0 0 5px #6300ff88; }
+      50%      { box-shadow: 0 0 20px #00d4ffaa; }
+    }
+
+    /* Title */
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffffff, #00d4ff, #6300ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+      animation: shimmer 4s linear infinite;
+      background-size: 200%;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .subtitle {
+      color: #8899bb;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 60px;
+    }
+
+    /* Cards grid */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      justify-items: center;
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      background: linear-gradient(145deg, #111130, #0d0d25);
+      border: 1px solid transparent;
+      border-radius: 20px;
+      padding: 36px 28px 32px;
+      text-decoration: none;
+      color: #fff;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(.23,1.2,.32,1), box-shadow 0.4s ease;
+      cursor: pointer;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1.5px;
+      background: var(--gradient);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--glow);
+      opacity: 0;
+      transition: opacity 0.4s;
+      border-radius: 20px;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .card:hover::after { opacity: 1; }
+
+    /* Card 1 - Proxy */
+    .card-proxy {
+      --gradient: linear-gradient(135deg, #6300ff, #00d4ff);
+      --glow: radial-gradient(ellipse at 50% 0%, rgba(99,0,255,0.15) 0%, transparent 70%);
+    }
+    /* Card 2 - MT Manager */
+    .card-mt {
+      --gradient: linear-gradient(135deg, #ff0080, #ff6a00);
+      --glow: radial-gradient(ellipse at 50% 0%, rgba(255,0,128,0.15) 0%, transparent 70%);
+    }
+
+    .card-icon {
+      font-size: 3.5rem;
+      margin-bottom: 18px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    .card-tag {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .card-proxy .card-tag { background: rgba(99,0,255,0.3); color: #a78bfa; border: 1px solid #6300ff66; }
+    .card-mt    .card-tag { background: rgba(255,0,128,0.3); color: #f9a8d4; border: 1px solid #ff008066; }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .card-desc {
+      color: #8899bb;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 28px;
+      border-radius: 50px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card-proxy .btn {
+      background: linear-gradient(135deg, #6300ff, #00d4ff);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(99,0,255,0.4);
+    }
+    .card-mt .btn {
+      background: linear-gradient(135deg, #ff0080, #ff6a00);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(255,0,128,0.4);
+    }
+    .btn:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(255,255,255,0.2); }
+    .btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* Shimmer effect on card hover */
+    .card .shimmer {
+      position: absolute;
+      top: -100%;
+      left: -60%;
+      width: 50%;
+      height: 300%;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+      z-index: 1;
+    }
+    .card:hover .shimmer { left: 130%; }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 60px auto 0;
+      max-width: 400px;
+      color: #334;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #334, transparent);
+    }
+    .divider span { font-size: 0.75rem; letter-spacing: 3px; white-space: nowrap; }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 30px;
+      padding-bottom: 30px;
+      color: #445;
+      font-size: 0.82rem;
+      letter-spacing: 2px;
+    }
+    footer span { color: #6300ff; }
+
+    /* Update Channel */
+    .update-channel {
+      position: relative;
+      display: block;
+      margin: 40px auto 0;
+      max-width: 520px;
+      text-decoration: none;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0d0d25, #111130);
+      border: 1px solid #00ff8844;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .update-channel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1.5px;
+      background: linear-gradient(135deg, #00ff88, #00d4ff, #6300ff);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: border-spin 4s linear infinite;
+    }
+    @keyframes border-spin {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    .update-channel:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,255,136,0.15);
+    }
+    .update-inner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .update-icon {
+      font-size: 2rem;
+      animation: ring 2s ease-in-out infinite;
+    }
+    @keyframes ring {
+      0%,100% { transform: rotate(0deg); }
+      10%      { transform: rotate(-15deg); }
+      20%      { transform: rotate(15deg); }
+      30%      { transform: rotate(-10deg); }
+      40%      { transform: rotate(10deg); }
+      50%      { transform: rotate(0deg); }
+    }
+    .update-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+    }
+    .update-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #00ff88, #00d4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .update-link {
+      font-size: 0.82rem;
+      color: #5577aa;
+      letter-spacing: 0.5px;
+    }
+    .update-arrow {
+      font-size: 1.5rem;
+      color: #00ff88;
+      transition: transform 0.3s;
+    }
+    .update-channel:hover .update-arrow { transform: translateX(6px); }
+    .update-ping {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 6px #00ff88;
+      animation: ping 1.5s ease-out infinite;
+    }
+    @keyframes ping {
+      0%   { transform: scale(1); opacity: 1; }
+      70%  { transform: scale(2); opacity: 0; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    /* Particle effect */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: rise var(--d) linear infinite;
+      opacity: 0;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+<!-- Glowing orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<div class="container">
+
+  <div class="badge">✦ Bộ Sưu Tập Công Cụ ✦</div>
+
+  <h1>TÀI LIỆU THAM KHẢO</h1>
+  <p class="subtitle">🚀 Tổng hợp tài nguyên mới nhất</p>
+
+  <div class="cards">
+
+    <!-- Card 1: Proxy V5 -->
+    <a class="card card-proxy" href="https://www.mediafire.com/file/denv6py3infukt5/PROXY+CHÚ+PÔ+V5+MỚI+NHẤT.zip/file" target="_blank" rel="noopener">
+      <div class="shimmer"></div>
+      <span class="card-icon">🛡️</span>
+      <div class="card-tag">🆕 Mới Nhất</div>
+      <h2 class="card-title">Proxy V5</h2>
+      <p class="card-desc">
+        Proxy Chú Pô V5 phiên bản mới nhất.<br/>
+        Tốc độ cao · Ổn định · Bảo mật tối đa
+      </p>
+      <span class="btn">
+        <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.84v6h5.66V9h3.84L12 2z"/></svg>
+        Tải Ngay 👇
+      </span>
+    </a>
+
+    <!-- Card 2: MT Manager -->
+    <a class="card card-mt" href="https://www.mediafire.com/file/76mt3uz29kbcmso/MT_Manager_2.26.4.apk/file" target="_blank" rel="noopener">
+      <div class="shimmer"></div>
+      <span class="card-icon">⚙️</span>
+      <div class="card-tag">📱 v2.26.4</div>
+      <h2 class="card-title">MT Manager</h2>
+      <p class="card-desc">
+        MT Manager phiên bản 2.26.4 mới nhất.<br/>
+        Xử lý dễ dàng · Không bị rối rắm như ZArchiver
+      </p>
+      <span class="btn">
+        <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.84v6h5.66V9h3.84L12 2z"/></svg>
+        Tải Ngay 👇
+      </span>
+    </a>
+
+  </div>
+
+  <div class="divider"><span>✦ Cập nhật liên tục ✦</span></div>
+
+  <!-- Kênh báo lỗi -->
+  <a class="update-channel" href="https://haipo9832-hub.github.io/biolienhe/" target="_blank" rel="noopener">
+    <div class="update-inner">
+      <span class="update-icon">📢</span>
+      <div class="update-text">
+        <span class="update-label">KÊNH BÁO LỖI VÀ UPDATE</span>
+        <span class="update-link">haipo9832-hub.github.io/biolienhe</span>
+      </div>
+      <span class="update-arrow">→</span>
+    </div>
+    <div class="update-ping"></div>
+  </a>
+
+</div>
+
+<footer>Made with <span>♥</span> · Tài Liệu Tham Khảo © 2026</footer>
+
+<script>
+  // Generate stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('span');
+    s.style.left  = Math.random() * 100 + '%';
+    s.style.top   = Math.random() * 100 + '%';
+    s.style.setProperty('--d', (1.5 + Math.random() * 4) + 's');
+    s.style.animationDelay = (Math.random() * 5) + 's';
+    s.style.width  = (Math.random() * 2.5 + 0.5) + 'px';
+    s.style.height = s.style.width;
+    starsEl.appendChild(s);
+  }
+
+  // Generate particles
+  const particlesEl = document.getElementById('particles');
+  const colors = ['#6300ff','#00d4ff','#ff0080','#ff6a00','#ffffff'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left  = Math.random() * 100 + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.setProperty('--d', (6 + Math.random() * 10) + 's');
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    particlesEl.appendChild(p);
+  }
+</script>
+</body>
+</html>
